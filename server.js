@@ -1,6 +1,6 @@
 import "dotenv/config";
 import { createServer } from "node:http";
-import { createReadStream } from "node:fs";
+import { createReadStream, existsSync } from "node:fs";
 import { stat } from "node:fs/promises";
 import { extname, join, normalize, resolve } from "node:path";
 import { spawn } from "node:child_process";
@@ -9,7 +9,7 @@ import { mkdir, writeFile } from "node:fs/promises";
 
 const host = process.env.HOST || "127.0.0.1";
 const port = Number(process.env.PORT || 3000);
-const publicDir = resolve("public");
+const publicDir = existsSync(resolve("dist")) ? resolve("dist") : resolve("public");
 const shouldOpen = process.argv.includes("--open");
 
 // Initialize Supabase Client
