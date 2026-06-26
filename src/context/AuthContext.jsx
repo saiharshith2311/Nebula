@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { useToast } from "./ToastContext";
 
 const AuthContext = createContext(null);
 
@@ -6,6 +7,7 @@ export function AuthProvider({ children }) {
   const [supabaseClient, setSupabaseClient] = useState(null);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { addToast } = useToast();
 
   useEffect(() => {
     async function initAuth() {
@@ -29,20 +31,42 @@ export function AuthProvider({ children }) {
           const client = supabaseLib.createClient(config.supabaseUrl, config.supabaseAnonKey);
           setSupabaseClient(client);
 
+          // Domain validation helper
+          const checkEmailAndSetUser = async (session, clientInstance, isInitial = false, event = "") => {
+            if (session && !localStorage.getItem("mockSession")) {
+              const email = session.user?.email || "";
+              if (!email.endsWith("iitm.ac.in")) {
+                console.warn("Unauthorized domain login attempt:", email);
+                addToast("Use IIT Madras email only!", "error", 5000);
+                await clientInstance.auth.signOut();
+                setUser(null);
+                return false;
+              }
+              setUser(session.user);
+              if (!isInitial && event === "SIGNED_IN") {
+                if (sessionStorage.getItem("explicitLoginPending") === "true") {
+                  addToast("Logged in successfully!", "success");
+                  sessionStorage.removeItem("explicitLoginPending");
+                }
+              }
+              return true;
+            } else if (!session && !localStorage.getItem("mockSession")) {
+              setUser(null);
+              return false;
+            }
+            return true;
+          };
+
           // Get initial session
           const { data: { session } } = await client.auth.getSession();
           if (session && !mockSessionStr) {
-            setUser(session.user);
+            await checkEmailAndSetUser(session, client, true);
           }
 
           // Listen for auth state changes
-          const { data: { subscription } } = client.auth.onAuthStateChange((event, session) => {
+          const { data: { subscription } } = client.auth.onAuthStateChange(async (event, session) => {
             console.log("Auth state changed:", event, !!session);
-            if (session && !localStorage.getItem("mockSession")) {
-              setUser(session.user);
-            } else if (!session && !localStorage.getItem("mockSession")) {
-              setUser(null);
-            }
+            await checkEmailAndSetUser(session, client, false, event);
           });
 
           return () => {
@@ -59,13 +83,14 @@ export function AuthProvider({ children }) {
     }
 
     initAuth();
-  }, []);
+  }, [addToast]);
 
   const loginWithGoogle = async () => {
     if (!supabaseClient) {
       alert("Supabase client is not initialized.");
       return;
     }
+    sessionStorage.setItem("explicitLoginPending", "true"); // Track explicit login attempt
     const { error } = await supabaseClient.auth.signInWithOAuth({
       provider: "google",
       options: {
@@ -74,6 +99,7 @@ export function AuthProvider({ children }) {
     });
     if (error) {
       console.error("Google sign in failed:", error.message);
+      addToast(`Login failed: ${error.message}`, "error");
       throw error;
     }
   };
@@ -81,10 +107,18 @@ export function AuthProvider({ children }) {
   const logout = async () => {
     localStorage.removeItem("mockSession");
     if (supabaseClient) {
-      await supabaseClient.auth.signOut();
+      try {
+        await supabaseClient.auth.signOut();
+      } catch (err) {
+        console.error("Error signing out from Supabase:", err);
+      }
     }
     setUser(null);
-    window.location.href = "/";
+    addToast("Logged out successfully.", "info");
+    // Small delay to let the toast display before hard-redirect
+    setTimeout(() => {
+      window.location.href = "/";
+    }, 500);
   };
 
   const value = {

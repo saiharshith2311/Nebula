@@ -1,11 +1,24 @@
 import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { useToast } from "../context/ToastContext";
 
 export default function Layout({ children }) {
   const { user, logout } = useAuth();
+  const { addToast } = useToast();
   const location = useLocation();
   const navigate = useNavigate();
+
+  const handleFeedbackClick = (e) => {
+    e.preventDefault();
+    navigator.clipboard.writeText("hitman26457@gmail.com")
+      .then(() => {
+        addToast("Email copied! Mail your suggestions to the copied email.", "success");
+      })
+      .catch((err) => {
+        console.error("Clipboard copy failed:", err);
+      });
+  };
 
   const getSubLabel = () => {
     switch (location.pathname) {
@@ -40,10 +53,10 @@ export default function Layout({ children }) {
   return (
     <div className={`app-shell ${isToolPage ? "tool-page" : ""}`}>
       <header className="topbar">
-        <Link className="brand" to="/" aria-label="Campus Compass main page">
-          <span className="brand-mark" aria-hidden="true">CC</span>
+        <Link className="brand" to="/" aria-label="Harbour main page">
+          <span className="brand-mark" aria-hidden="true">H</span>
           <span>
-            <strong>Campus Compass</strong>
+            <strong>Harbour</strong>
             <small>{getSubLabel()}</small>
           </span>
         </Link>
@@ -97,6 +110,17 @@ export default function Layout({ children }) {
       </header>
 
       <main className={isToolPage ? "tool-page-main" : ""}>{children}</main>
+      <footer style={{ marginTop: "40px", padding: "16px 0", textAlign: "center", borderTop: "1px solid var(--line)" }}>
+        <a 
+          href="#" 
+          onClick={handleFeedbackClick}
+          style={{ fontSize: "0.82rem", color: "var(--muted)", textDecoration: "none", fontWeight: "600", transition: "color 150ms" }}
+          onMouseEnter={(e) => e.target.style.color = "var(--ink)"}
+          onMouseLeave={(e) => e.target.style.color = "var(--muted)"}
+        >
+          Share your feedback and suggestions
+        </a>
+      </footer>
     </div>
   );
 }

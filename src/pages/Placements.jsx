@@ -69,7 +69,7 @@ export default function Placements() {
   const [category, setCategory] = useState("Non Core");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [resourceLink, setResourceLink] = useState("");
 
   const isMockMode = !!localStorage.getItem("mockSession");
 
@@ -160,7 +160,9 @@ export default function Placements() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    let finalDesc = description;
+    const finalDesc = description.trim()
+      ? `${description.trim()}\n\n[Open Resource](${resourceLink.trim()})`
+      : `[Open Resource](${resourceLink.trim()})`;
     
     const submitPayload = async (payload) => {
       if (isMockMode) {
@@ -197,29 +199,14 @@ export default function Placements() {
       description: finalDesc,
     };
 
-    if (selectedFile) {
-      if (isMockMode) {
-        payload.description += `\n\n[Attached File: ${selectedFile.name} - Saved Locally]`;
-        await submitPayload(payload);
-      } else {
-        const reader = new FileReader();
-        reader.onload = async (event) => {
-          payload.file_name = selectedFile.name;
-          payload.file_data = event.target.result;
-          await submitPayload(payload);
-        };
-        reader.readAsDataURL(selectedFile);
-      }
-    } else {
-      await submitPayload(payload);
-    }
+    await submitPayload(payload);
   };
 
   const resetForm = () => {
     setCategory("Non Core");
     setTitle("");
     setDescription("");
-    setSelectedFile(null);
+    setResourceLink("");
   };
 
   return (
@@ -333,13 +320,22 @@ export default function Placements() {
                   />
                 </label>
                 <label>
-                  Short Description / Link
+                  Resource Link (e.g. Google Drive, Website URL)
+                  <input
+                    type="url"
+                    value={resourceLink}
+                    placeholder="https://drive.google.com/..."
+                    onChange={(e) => setResourceLink(e.target.value)}
+                    required
+                  />
+                </label>
+                <label>
+                  Short Description (Optional)
                   <textarea
                     rows="3"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
-                    placeholder="Add preparation notes or URL..."
-                    required
+                    placeholder="Add preparation notes or details about the resource..."
                     style={{
                       width: "100%",
                       borderRadius: "8px",
@@ -349,22 +345,6 @@ export default function Placements() {
                       padding: "10px",
                       fontFamily: "inherit",
                       resize: "vertical",
-                    }}
-                  />
-                </label>
-                <label>
-                  Upload File (Optional)
-                  <input
-                    type="file"
-                    accept=".pdf,.doc,.docx,.png,.jpg"
-                    onChange={(e) => setSelectedFile(e.target.files[0])}
-                    style={{
-                      padding: "8px",
-                      background: "rgba(8, 9, 8, 0.72)",
-                      border: "1px solid rgba(244, 240, 232, 0.13)",
-                      borderRadius: "8px",
-                      color: "var(--body)",
-                      cursor: "pointer",
                     }}
                   />
                 </label>

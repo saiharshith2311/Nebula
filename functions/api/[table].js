@@ -14,7 +14,7 @@ export async function onRequest(context) {
     return new Response(null, { headers: corsHeaders });
   }
 
-  if (!["reviews", "events", "placements"].includes(table)) {
+  if (!["reviews", "events", "placements", "departments"].includes(table)) {
     return new Response(
       JSON.stringify({ error: "Endpoint not found" }),
       { status: 404, headers: { "Content-Type": "application/json", ...corsHeaders } }

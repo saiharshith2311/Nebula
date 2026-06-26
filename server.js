@@ -99,9 +99,8 @@ const server = createServer(async (request, response) => {
       );
       return;
     }
-
     // Supported tables
-    if (!["reviews", "events", "placements"].includes(table)) {
+    if (!["reviews", "events", "placements", "departments"].includes(table)) {
       response.writeHead(404, { "Content-Type": "application/json" });
       response.end(JSON.stringify({ error: "Endpoint not found" }));
       return;
