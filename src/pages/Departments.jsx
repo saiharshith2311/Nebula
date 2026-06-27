@@ -280,7 +280,7 @@ export default function Departments() {
             <div className="panel-header">
               <div>
                 <p className="eyebrow">Academic Semesters</p>
-                <h1>Curated study materials, slides, and files sorted by department.</h1>
+                <h1>"Education is not the learning of facts, but the training of the mind to think." — Albert Einstein</h1>
               </div>
               <div>
                 <button className="ghost-button" onClick={() => setIsModalOpen(true)} type="button">

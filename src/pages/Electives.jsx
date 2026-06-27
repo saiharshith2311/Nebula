@@ -526,7 +526,7 @@ export default function Electives() {
         <div className="panel-header">
           <div>
             <p className="eyebrow">Elective reviews</p>
-            <h1>Find courses by workload, grading, and teaching style.</h1>
+            <h1>"An investment in knowledge pays the best interest." — Benjamin Franklin</h1>
           </div>
           <button className="ghost-button" type="button" onClick={() => setIsModalOpen(true)}>
             Add Review

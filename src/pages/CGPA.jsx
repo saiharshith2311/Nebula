@@ -109,7 +109,7 @@ export default function CGPA() {
         <div className="panel-header" style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "16px" }}>
           <div>
             <p className="eyebrow">CGPA calculator</p>
-            <h1>Calculate semester GPA and projected CGPA from course credits and grades.</h1>
+            <h1>"Measure what is measurable, and make measurable what is not so." — Galileo Galilei</h1>
           </div>
           {hasInput && (
             <div className="cgpa-score" aria-live="polite" style={{ alignSelf: "flex-start", marginTop: "8px" }}>

@@ -215,7 +215,7 @@ export default function Placements() {
         <div className="panel-header">
           <div>
             <p className="eyebrow">Placement resources</p>
-            <h1>Organize company prep material by role, round, and timeline.</h1>
+            <h1>"The only way to do great work is to love what you do." — Steve Jobs</h1>
           </div>
           <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "14px" }}>
             <div className="segment-control">
