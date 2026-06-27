@@ -11,7 +11,7 @@ export default function Layout({ children }) {
 
   const handleFeedbackClick = (e) => {
     e.preventDefault();
-    navigator.clipboard.writeText("hitman26457@gmail.com")
+    navigator.clipboard.writeText("harshith231163@gmail.com")
       .then(() => {
         addToast("Email copied! Mail your suggestions to the copied email.", "success");
       })
