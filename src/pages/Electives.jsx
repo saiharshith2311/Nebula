@@ -393,6 +393,7 @@ export default function Electives() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [searchFocused, setSearchFocused] = useState(false);
 
   // Form states
   const [courseName, setCourseName] = useState("");
@@ -513,6 +514,12 @@ export default function Electives() {
     return Array.from(set);
   }, [reviews]);
 
+  const filteredSuggestions = useMemo(() => {
+    const q = searchQuery.toLowerCase().trim();
+    if (!q) return [];
+    return suggestions.filter(item => item.toLowerCase().includes(q)).slice(0, 5);
+  }, [suggestions, searchQuery]);
+
   return (
     <Layout>
       <article className="feature-panel is-visible">
@@ -528,23 +535,40 @@ export default function Electives() {
 
         <div className="review-layout">
           <aside className="filters" aria-label="Elective filters">
-            <label>
-              Course name or ID
-              <input
-                id="courseSearch"
-                type="search"
-                value={searchQuery}
-                onChange={handleSearch}
-                list="courseSuggestions"
-                placeholder="Search HS5708, economics..."
-                autoComplete="off"
-              />
-            </label>
-            <datalist id="courseSuggestions">
-              {suggestions.map((item, idx) => (
-                <option key={idx} value={item} />
-              ))}
-            </datalist>
+            <div className="search-suggestions-container">
+              <label>
+                Course name or ID
+                <input
+                  id="courseSearch"
+                  type="search"
+                  value={searchQuery}
+                  onChange={handleSearch}
+                  onFocus={() => setSearchFocused(true)}
+                  onBlur={() => {
+                    // Delay slightly to allow click handlers on suggestions to fire
+                    setTimeout(() => setSearchFocused(false), 200);
+                  }}
+                  placeholder="Search HS5708, economics..."
+                  autoComplete="off"
+                />
+              </label>
+              {searchFocused && filteredSuggestions.length > 0 && (
+                <div className="search-suggestions-dropdown">
+                  {filteredSuggestions.map((item, idx) => (
+                    <div
+                      key={idx}
+                      className="suggestion-item"
+                      onClick={() => {
+                        setSearchQuery(item);
+                        setSearchFocused(false);
+                      }}
+                    >
+                      {item}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
             <p className="result-count" aria-live="polite">
               {loading ? "Loading reviews..." : `${filteredReviews.length} course${filteredReviews.length === 1 ? "" : "s"} found`}
             </p>

@@ -981,7 +981,27 @@ select option {
   .topbar,
   .panel-header {
     flex-direction: column;
-    align-items: stretch;
+    align-items: flex-start;
+  }
+
+  #userMenu {
+    margin-left: 0 !important;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  #signOutBtn {
+    margin-left: auto !important;
+    width: auto !important;
+    flex-shrink: 0;
+  }
+
+  .panel-header .ghost-button,
+  .panel-header .primary-button {
+    width: auto !important;
+    align-self: flex-start;
   }
 
   .auth-actions {
@@ -1044,7 +1064,6 @@ select option {
     padding: 0 18px 18px;
   }
 
-  .ghost-button,
   .primary-button.full {
     width: 100%;
   }
@@ -1320,4 +1339,43 @@ textarea {
 
 textarea::placeholder {
   color: rgba(17, 24, 39, 0.4) !important;
+}
+
+/* Custom Autocomplete suggestions for Electives search bar */
+.search-suggestions-container {
+  position: relative;
+  width: 100%;
+}
+
+.search-suggestions-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  margin-top: 6px;
+  background: var(--surface-soft);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.suggestion-item {
+  padding: 10px 14px;
+  font-size: 0.88rem;
+  color: var(--body);
+  cursor: pointer;
+  transition: all 150ms ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.suggestion-item:hover {
+  background: rgba(13, 148, 136, 0.08);
+  color: var(--teal-dark);
+  padding-left: 18px;
 }

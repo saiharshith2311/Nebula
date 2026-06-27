@@ -1,55 +1,30 @@
 import React, { useState, useMemo } from "react";
 import Layout from "../components/Layout";
 
-const GRADE_SCALES = {
-  campus10: {
-    max: 10,
-    grades: [
-      ["S", 10],
-      ["A", 9],
-      ["B", 8],
-      ["C", 7],
-      ["D", 6],
-      ["E", 5],
-      ["F", 0],
-    ],
-  },
-  fourPoint: {
-    max: 4,
-    grades: [
-      ["A", 4],
-      ["A-", 3.7],
-      ["B+", 3.3],
-      ["B", 3],
-      ["B-", 2.7],
-      ["C+", 2.3],
-      ["C", 2],
-      ["C-", 1.7],
-      ["D", 1],
-      ["F", 0],
-      ["W", 0],
-      ["WP", 0],
-      ["WF", 0],
-    ],
-  },
+const GRADE_SCALE = {
+  max: 10,
+  grades: [
+    ["S", 10],
+    ["A", 9],
+    ["B", 8],
+    ["C", 7],
+    ["D", 6],
+    ["E", 5],
+    ["F", 0],
+  ],
 };
 
 export default function CGPA() {
   const [currentCgpa, setCurrentCgpa] = useState("");
   const [earnedCredits, setEarnedCredits] = useState("");
-  const [gradeScale, setGradeScale] = useState("campus10");
   const [courses, setCourses] = useState([
     { id: 1, courseCode: "", creditHours: "3", grade: "" },
     { id: 2, courseCode: "", creditHours: "3", grade: "" },
     { id: 3, courseCode: "", creditHours: "3", grade: "" },
   ]);
 
-  const activeScale = useMemo(() => {
-    return GRADE_SCALES[gradeScale] || GRADE_SCALES.campus10;
-  }, [gradeScale]);
-
   const getGradePoints = (grade) => {
-    const match = activeScale.grades.find(([value]) => value === grade);
+    const match = GRADE_SCALE.grades.find(([value]) => value === grade);
     return match ? match[1] : 0;
   };
 
@@ -81,9 +56,9 @@ export default function CGPA() {
       totalCredits > 0
     ) {
       const projected = (current * earned + semesterGpa * totalCredits) / (earned + totalCredits);
-      projectedCgpa = Math.min(projected, activeScale.max);
+      projectedCgpa = Math.min(projected, GRADE_SCALE.max);
     } else if (Number.isFinite(current) && current > 0 && totalCredits === 0) {
-      projectedCgpa = Math.min(current, activeScale.max);
+      projectedCgpa = Math.min(current, GRADE_SCALE.max);
     } else {
       projectedCgpa = semesterGpa;
     }
@@ -93,7 +68,7 @@ export default function CGPA() {
       semesterCredits: totalCredits,
       projectedCgpa,
     };
-  }, [courses, currentCgpa, earnedCredits, activeScale]);
+  }, [courses, currentCgpa, earnedCredits]);
 
   const handleCourseChange = (id, field, value) => {
     setCourses((prev) =>
@@ -119,7 +94,6 @@ export default function CGPA() {
   const handleReset = () => {
     setCurrentCgpa("");
     setEarnedCredits("");
-    setGradeScale("campus10");
     setCourses([
       { id: 1, courseCode: "", creditHours: "3", grade: "" },
       { id: 2, courseCode: "", creditHours: "3", grade: "" },
@@ -127,33 +101,37 @@ export default function CGPA() {
     ]);
   };
 
+  const hasInput = !!(currentCgpa || earnedCredits || courses.some((c) => c.grade));
+
   return (
     <Layout>
       <article className="feature-panel is-visible">
-        <div className="panel-header">
+        <div className="panel-header" style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "16px" }}>
           <div>
             <p className="eyebrow">CGPA calculator</p>
             <h1>Calculate semester GPA and projected CGPA from course credits and grades.</h1>
           </div>
-          <div className="cgpa-score" aria-live="polite">
-            <span>CGPA</span>
-            <strong id="cgpaValue">{results.projectedCgpa.toFixed(2)}</strong>
-          </div>
+          {hasInput && (
+            <div className="cgpa-score" aria-live="polite" style={{ alignSelf: "flex-start", marginTop: "8px" }}>
+              <span>CGPA</span>
+              <strong id="cgpaValue">{results.projectedCgpa.toFixed(2)}</strong>
+            </div>
+          )}
         </div>
 
         <div className="cgpa-workspace">
-          <div className="calculator-grid">
+          <div className="calculator-grid" style={{ gridTemplateColumns: "repeat(2, minmax(180px, 1fr))" }}>
             <label>
               Current CGPA
               <input
                 id="currentCgpaInput"
                 type="number"
                 min="0"
-                max={activeScale.max}
+                max={GRADE_SCALE.max}
                 step="0.01"
                 value={currentCgpa}
                 onChange={(e) => setCurrentCgpa(e.target.value)}
-                placeholder={gradeScale === "campus10" ? "8.20" : "3.50"}
+                placeholder="8.20"
               />
             </label>
             <label>
@@ -167,17 +145,6 @@ export default function CGPA() {
                 onChange={(e) => setEarnedCredits(e.target.value)}
                 placeholder="96"
               />
-            </label>
-            <label>
-              Grade scale
-              <select id="gradeScaleInput" value={gradeScale} onChange={(e) => {
-                setGradeScale(e.target.value);
-                // Reset course grades to match scale
-                setCourses((prev) => prev.map((c) => ({ ...c, grade: "" })));
-              }}>
-                <option value="campus10">Campus 10-point scale</option>
-                <option value="fourPoint">4.0 scale from package</option>
-              </select>
             </label>
           </div>
 
@@ -222,7 +189,7 @@ export default function CGPA() {
                       onChange={(e) => handleCourseChange(course.id, "grade", e.target.value)}
                     >
                       <option value="">--</option>
-                      {activeScale.grades.map(([grade, val]) => (
+                      {GRADE_SCALE.grades.map(([grade, val]) => (
                         <option key={grade} value={grade}>
                           {grade} ({val})
                         </option>
@@ -250,20 +217,22 @@ export default function CGPA() {
             </button>
           </div>
 
-          <div className="result-grid" aria-live="polite">
-            <div>
-              <span>Semester GPA</span>
-              <strong id="semesterGpaValue">{results.semesterGpa.toFixed(2)}</strong>
+          {hasInput && (
+            <div className="result-grid" aria-live="polite">
+              <div>
+                <span>Semester GPA</span>
+                <strong id="semesterGpaValue">{results.semesterGpa.toFixed(2)}</strong>
+              </div>
+              <div>
+                <span>Semester credits</span>
+                <strong id="semesterCreditsValue">{results.semesterCredits}</strong>
+              </div>
+              <div>
+                <span>Projected CGPA</span>
+                <strong id="projectedCgpaValue">{results.projectedCgpa.toFixed(2)}</strong>
+              </div>
             </div>
-            <div>
-              <span>Semester credits</span>
-              <strong id="semesterCreditsValue">{results.semesterCredits}</strong>
-            </div>
-            <div>
-              <span>Projected CGPA</span>
-              <strong id="projectedCgpaValue">{results.projectedCgpa.toFixed(2)}</strong>
-            </div>
-          </div>
+          )}
         </div>
       </article>
     </Layout>
