@@ -63,9 +63,6 @@ export default function Layout({ children }) {
 
         {isToolPage && (
           <nav className="topnav" aria-label="Tool navigation">
-            <Link className={location.pathname === "/" ? "is-current" : ""} to="/">
-              Main Page
-            </Link>
             <Link className={location.pathname === "/electives" ? "is-current" : ""} to="/electives">
               Electives
             </Link>
@@ -93,7 +90,7 @@ export default function Layout({ children }) {
           />
           <span
             id="userName"
-            style={{ fontWeight: 800, fontSize: "0.9rem", color: "var(--body)", display: "inline-flex" }}
+            style={{ fontWeight: 800, fontSize: "0.9rem", color: "var(--body)", display: "inline-flex", whiteSpace: "nowrap" }}
           >
             {user.user_metadata?.full_name || "Student"}
           </span>
