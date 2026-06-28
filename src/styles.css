@@ -121,7 +121,7 @@ p {
   font-size: 1.6rem;
   font-weight: 900;
   letter-spacing: -0.03em;
-  background: linear-gradient(135deg, #111827 30%, #0f766e 100%);
+  background: linear-gradient(135deg, #eab308 0%, #06b6d4 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
