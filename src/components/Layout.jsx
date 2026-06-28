@@ -27,7 +27,7 @@ export default function Layout({ children }) {
       case "/cgpa":
         return "CGPA Calculator";
       case "/placements":
-        return "Placement Resources";
+        return "Placements & Internships";
       case "/departments":
         return "Department Resources";
       case "/events":
@@ -73,7 +73,7 @@ export default function Layout({ children }) {
               CGPA
             </Link>
             <Link className={location.pathname === "/placements" ? "is-current" : ""} to="/placements">
-              Placements
+              Placements & Internships
             </Link>
             <Link className={location.pathname === "/departments" ? "is-current" : ""} to="/departments">
               Department Resources

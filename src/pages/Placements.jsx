@@ -214,7 +214,7 @@ export default function Placements() {
       <article className="feature-panel is-visible">
         <div className="panel-header">
           <div>
-            <p className="eyebrow">Placement resources</p>
+            <p className="eyebrow">Placements & Internships</p>
             <h1>"The only way to do great work is to love what you do." — Steve Jobs</h1>
           </div>
           <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "14px" }}>
@@ -295,7 +295,7 @@ export default function Placements() {
         <div className="modal-overlay is-active" onClick={() => setIsModalOpen(false)}>
           <div className="modal-container" onClick={(e) => e.stopPropagation()}>
             <header className="modal-header">
-              <h2>Upload Placement Resource</h2>
+              <h2>Upload Placement & Internship Resource</h2>
               <button className="modal-close" type="button" aria-label="Close modal" onClick={() => setIsModalOpen(false)}>
                 ×
               </button>

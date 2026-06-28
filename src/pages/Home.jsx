@@ -108,8 +108,8 @@ export default function Home() {
                   </svg>
                 </span>
                 <span>
-                  <strong>Placement Resources</strong>
-                  <small>Company prep, aptitude sets, interview archives</small>
+                  <strong>Placements & Internships</strong>
+                  <small>Company prep, internship guides, interview archives</small>
                 </span>
               </div>
 
@@ -206,8 +206,8 @@ export default function Home() {
               </svg>
             </span>
             <span>
-              <strong>Placement Resources</strong>
-              <small>Company prep, aptitude sets, interview archives</small>
+              <strong>Placements & Internships</strong>
+              <small>Company prep, internship guides, interview archives</small>
             </span>
           </Link>
 
