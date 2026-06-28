@@ -661,16 +661,6 @@ export default function Electives() {
                     value={rating}
                     onChange={(e) => setRating(Number(e.target.value))}
                     required
-                    style={{
-                      width: "100%",
-                      minHeight: "44px",
-                      borderRadius: "8px",
-                      background: "rgba(8, 9, 8, 0.72)",
-                      border: "1px solid rgba(244, 240, 232, 0.13)",
-                      color: "var(--ink)",
-                      padding: "0 12px",
-                      fontFamily: "inherit"
-                    }}
                   >
                     <option value="5">★★★★★ (5/5)</option>
                     <option value="4">★★★★☆ (4/5)</option>
