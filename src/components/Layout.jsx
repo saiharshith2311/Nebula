@@ -54,7 +54,7 @@ export default function Layout({ children }) {
     <div className={`app-shell ${isToolPage ? "tool-page" : ""}`}>
       <header className="topbar">
         <Link className="brand" to="/" aria-label="Harbour main page">
-          <span className="brand-mark" aria-hidden="true">H</span>
+          <img className="brand-logo" src="/logo.png" alt="Harbour Logo" style={{ width: "44px", height: "44px", borderRadius: "8px", objectFit: "cover", border: "1px solid var(--line)" }} />
           <span>
             <strong>Harbour</strong>
             <small>{getSubLabel()}</small>

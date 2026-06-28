@@ -44,7 +44,7 @@ export default function Home() {
       <section className="home-screen" id="home" aria-labelledby="homeTitle">
         <header className="home-nav" aria-label="Authentication options">
           <a className="brand brand-on-home" href="#home" aria-label="Harbour home">
-            <span className="brand-mark" aria-hidden="true">H</span>
+            <img className="brand-logo" src="/logo.png" alt="Harbour Logo" style={{ width: "44px", height: "44px", borderRadius: "8px", objectFit: "cover", border: "1px solid var(--line)" }} />
             <span>
               <strong>Harbour</strong>
             </span>
