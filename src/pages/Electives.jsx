@@ -6,13 +6,15 @@ const DEFAULT_REVIEWS = [
     "course": "Econometrics-1",
     "course_id": "HS5708",
     "professor": "Sabuj Kumar Mandal",
-    "review": "Professor is very unpredictable and affects grades pretty often."
+    "review": "Professor is very unpredictable and affects grades pretty often.",
+    "rating": 3
   },
   {
     "course": "Fundamentals of Operations Research",
     "course_id": "MS3510",
     "professor": "Srinivasan G",
-    "review": "Overall it is a usual SAB course, but you have to put more effort into practicing theoretical problems to get a good score in exams. Strict attendance."
+    "review": "Overall it is a usual SAB course, but you have to put more effort into practicing theoretical problems to get a good score in exams. Strict attendance.",
+    "rating": 4
   },
   {
     "course": "Literature and Values",
@@ -400,6 +402,7 @@ export default function Electives() {
   const [courseId, setCourseId] = useState("");
   const [professor, setProfessor] = useState("");
   const [description, setDescription] = useState("");
+  const [rating, setRating] = useState(5);
 
   const isMockMode = !!localStorage.getItem("mockSession");
 
@@ -466,6 +469,7 @@ export default function Electives() {
       course_id: courseId || null,
       professor: professor || null,
       review: description,
+      rating: rating ? Number(rating) : null,
     };
 
     if (isMockMode) {
@@ -501,6 +505,7 @@ export default function Electives() {
     setCourseId("");
     setProfessor("");
     setDescription("");
+    setRating(5);
   };
 
   // Extract unique course titles/codes for search autocomplete datalist
@@ -591,6 +596,15 @@ export default function Electives() {
                         <strong>Professor: </strong>
                         {rev.professor || "Not provided"}
                       </span>
+                      {rev.rating && (
+                        <span>
+                          <strong>Rating: </strong>
+                          <span style={{ color: "var(--gold)" }}>
+                            {"★".repeat(rev.rating)}{"☆".repeat(5 - rev.rating)}
+                          </span>{" "}
+                          ({rev.rating}/5)
+                        </span>
+                      )}
                     </div>
                     <p>{rev.review}</p>
                   </div>
@@ -632,7 +646,7 @@ export default function Electives() {
                     placeholder="e.g. HS5708"
                   />
                 </label>
-                <label>
+                 <label>
                   Professor Name (Optional)
                   <input
                     type="text"
@@ -640,6 +654,30 @@ export default function Electives() {
                     onChange={(e) => setProfessor(e.target.value)}
                     placeholder="e.g. Sabuj Kumar Mandal"
                   />
+                </label>
+                <label>
+                  Course Rating
+                  <select
+                    value={rating}
+                    onChange={(e) => setRating(Number(e.target.value))}
+                    required
+                    style={{
+                      width: "100%",
+                      minHeight: "44px",
+                      borderRadius: "8px",
+                      background: "rgba(8, 9, 8, 0.72)",
+                      border: "1px solid rgba(244, 240, 232, 0.13)",
+                      color: "var(--ink)",
+                      padding: "0 12px",
+                      fontFamily: "inherit"
+                    }}
+                  >
+                    <option value="5">★★★★★ (5/5) - Excellent</option>
+                    <option value="4">★★★★☆ (4/5) - Very Good</option>
+                    <option value="3">★★★☆☆ (3/5) - Average</option>
+                    <option value="2">★★☆☆☆ (2/5) - Below Average</option>
+                    <option value="1">★☆☆☆☆ (1/5) - Poor</option>
+                  </select>
                 </label>
                 <label>
                   Review Description

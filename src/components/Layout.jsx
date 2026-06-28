@@ -53,10 +53,10 @@ export default function Layout({ children }) {
   return (
     <div className={`app-shell ${isToolPage ? "tool-page" : ""}`}>
       <header className="topbar">
-        <Link className="brand" to="/" aria-label="Harbour main page">
-          <img className="brand-logo" src="/logo.png" alt="Harbour Logo" style={{ width: "44px", height: "44px", borderRadius: "8px", objectFit: "cover", border: "1px solid var(--line)" }} />
+        <Link className="brand" to="/" aria-label="Nebula main page">
+          <img className="brand-logo" src="/logo.png" alt="Nebula Logo" style={{ width: "44px", height: "44px", borderRadius: "8px", objectFit: "cover", border: "1px solid var(--line)" }} />
           <span>
-            <strong>Harbour</strong>
+            <strong>Nebula</strong>
             <small>{getSubLabel()}</small>
           </span>
         </Link>
