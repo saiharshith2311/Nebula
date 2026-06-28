@@ -7,6 +7,7 @@ import { useToast } from "../context/ToastContext";
 export default function Home() {
   const { user, loginWithGoogle, loading } = useAuth();
   const { addToast } = useToast();
+  
 
   const handleFeedbackClick = (e) => {
     e.preventDefault();
