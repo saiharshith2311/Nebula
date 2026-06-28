@@ -672,11 +672,11 @@ export default function Electives() {
                       fontFamily: "inherit"
                     }}
                   >
-                    <option value="5">★★★★★ (5/5) - Excellent</option>
-                    <option value="4">★★★★☆ (4/5) - Very Good</option>
-                    <option value="3">★★★☆☆ (3/5) - Average</option>
-                    <option value="2">★★☆☆☆ (2/5) - Below Average</option>
-                    <option value="1">★☆☆☆☆ (1/5) - Poor</option>
+                    <option value="5">★★★★★ (5/5)</option>
+                    <option value="4">★★★★☆ (4/5)</option>
+                    <option value="3">★★★☆☆ (3/5)</option>
+                    <option value="2">★★☆☆☆ (2/5)</option>
+                    <option value="1">★☆☆☆☆ (1/5)</option>
                   </select>
                 </label>
                 <label>

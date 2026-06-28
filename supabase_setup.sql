@@ -46,6 +46,9 @@ CREATE POLICY "Allow authenticated students to upload files"
 -- ----------------------------------------------------
 
 -- 1. REVIEWS TABLE POLICIES
+-- Add rating column to reviews table if it does not already exist
+ALTER TABLE public.reviews ADD COLUMN IF NOT EXISTS rating integer;
+
 -- Enable Row Level Security
 ALTER TABLE public.reviews ENABLE ROW LEVEL SECURITY;
 
