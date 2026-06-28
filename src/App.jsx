@@ -8,12 +8,14 @@ import CGPA from "./pages/CGPA";
 import Placements from "./pages/Placements";
 import Departments from "./pages/Departments";
 import Events from "./pages/Events";
+import Analytics from "./components/Analytics";
 
 export default function App() {
   return (
     <ToastProvider>
       <AuthProvider>
         <Router>
+          <Analytics />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/index.html" element={<Home />} />
