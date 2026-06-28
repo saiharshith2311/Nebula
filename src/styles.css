@@ -719,7 +719,7 @@ select option {
   margin-bottom: 12px;
 }
 
-.review-meta span {
+.review-meta > span {
   display: inline-flex;
   align-items: center;
   gap: 4px;
