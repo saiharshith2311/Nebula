@@ -44,7 +44,7 @@ export default function Home() {
       <section className="home-screen" id="home" aria-labelledby="homeTitle">
         <header className="home-nav" aria-label="Authentication options">
           <a className="brand brand-on-home" href="#home" aria-label="Nebula home">
-            <img className="brand-logo" src="/logo.png" alt="Nebula Logo" style={{ width: "44px", height: "44px", borderRadius: "8px", objectFit: "cover", border: "1px solid var(--line)" }} />
+            <img className="brand-logo" src="/logo.png" alt="Nebula Logo" style={{ width: "44px", height: "44px", borderRadius: "50%", objectFit: "cover", border: "1px solid var(--line)" }} />
             <span>
               <strong>Nebula</strong>
             </span>
