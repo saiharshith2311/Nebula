@@ -598,11 +598,11 @@ export default function Electives() {
                       </span>
                       {rev.rating && (
                         <span>
-                          <strong>Rating: </strong>
-                          <span style={{ color: "var(--gold)" }}>
+                          <strong>Rating:</strong>
+                          <span style={{ color: "var(--gold)", letterSpacing: "2px", display: "inline-flex", alignItems: "center" }}>
                             {"★".repeat(rev.rating)}{"☆".repeat(5 - rev.rating)}
-                          </span>{" "}
-                          ({rev.rating}/5)
+                          </span>
+                          <span>({rev.rating}/5)</span>
                         </span>
                       )}
                     </div>
