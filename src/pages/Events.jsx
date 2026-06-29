@@ -49,40 +49,73 @@ function FormatDescription({ text }) {
             linkText.includes("File:") ||
             linkUrl.includes("drive.google.com");
 
-          parts.push(
-            <a
-              key={match.index}
-              href={linkUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={isAttachment ? "resource-link-btn" : "inline-link"}
-            >
-              {isAttachment && (
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  style={{ marginRight: "6px", display: "inline-block", verticalAlign: "text-bottom" }}
+          const isImage = linkUrl.match(/\.(jpeg|jpg|gif|png|webp|svg)/i);
+
+          if (isImage) {
+            parts.push(
+              <div key={match.index} style={{ marginTop: "12px", display: "flex", flexDirection: "column", gap: "8px" }}>
+                <img
+                  src={linkUrl}
+                  alt={linkText}
+                  style={{
+                    width: "100%",
+                    maxHeight: "140px",
+                    objectFit: "cover",
+                    borderRadius: "12px",
+                    border: "1px solid var(--line)"
+                  }}
+                />
+                <a
+                  href={linkUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="resource-link-btn"
+                  style={{ display: "inline-flex", alignSelf: "flex-start" }}
                 >
-                  {linkUrl.includes("drive.google.com") ? (
-                    <path d="M22 19H2L12 2l10 17z" />
-                  ) : (
-                    <>
-                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                      <polyline points="7 10 12 15 17 10" />
-                      <line x1="12" y1="15" x2="12" y2="3" />
-                    </>
-                  )}
-                </svg>
-              )}
-              {linkText}
-            </a>
-          );
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ marginRight: "6px", display: "inline-block", verticalAlign: "text-bottom" }}>
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                  View Flyer
+                </a>
+              </div>
+            );
+          } else {
+            parts.push(
+              <a
+                key={match.index}
+                href={linkUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={isAttachment ? "resource-link-btn" : "inline-link"}
+              >
+                {isAttachment && (
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    style={{ marginRight: "6px", display: "inline-block", verticalAlign: "text-bottom" }}
+                  >
+                    {linkUrl.includes("drive.google.com") ? (
+                      <path d="M22 19H2L12 2l10 17z" />
+                    ) : (
+                      <>
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                        <polyline points="7 10 12 15 17 10" />
+                        <line x1="12" y1="15" x2="12" y2="3" />
+                      </>
+                    )}
+                  </svg>
+                )}
+                {linkText}
+              </a>
+            );
+          }
 
           lastIndex = mdLinkRegex.lastIndex;
         }

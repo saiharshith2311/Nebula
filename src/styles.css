@@ -896,7 +896,8 @@ select option {
   padding: 28px;
 }
 
-.resource-card {
+.resource-card,
+.event-card {
   display: flex;
   flex-direction: column;
   min-height: 190px;
@@ -908,17 +909,11 @@ select option {
   position: relative;
 }
 
-.resource-card:hover {
+.resource-card:hover,
+.event-card:hover {
   transform: scale(1.15);
   z-index: 10;
   box-shadow: 0 12px 36px rgba(0, 0, 0, 0.08);
-}
-
-.event-card {
-  min-height: 190px;
-  padding: 20px;
-  border: 1px solid var(--line);
-  background: var(--surface-soft);
 }
 
 .resource-card span,
