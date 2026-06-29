@@ -214,7 +214,9 @@ export default function Events() {
               padding: "32px",
               fontSize: "1.1rem",
               lineHeight: "1.7",
-              color: "var(--body)"
+              color: "var(--body)",
+              wordBreak: "break-word",
+              overflowWrap: "anywhere"
             }}>
               <FormatDescription text={selectedEvent.description} />
             </div>
@@ -223,6 +225,13 @@ export default function Events() {
       </Layout>
     );
   }
+
+  const getSnippet = (text) => {
+    if (!text) return "";
+    const cleanText = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1");
+    if (cleanText.length <= 120) return cleanText;
+    return cleanText.substring(0, 120) + "...";
+  };
 
   return (
     <Layout>
@@ -247,7 +256,20 @@ export default function Events() {
               <article key={evt.id || index} className="event-card" onClick={() => setSelectedEvent(evt)}>
                 <span>{evt.category}</span>
                 <strong>{evt.title}</strong>
-                <FormatDescription text={evt.description} />
+                <p className="event-snippet" style={{ color: "var(--body)", fontSize: "0.88rem", lineHeight: "1.5", margin: 0 }}>
+                  {getSnippet(evt.description)}
+                </p>
+                <span className="see-more-btn" style={{ 
+                  marginTop: "auto", 
+                  color: "var(--teal-dark)", 
+                  fontWeight: "800", 
+                  fontSize: "0.85rem", 
+                  display: "inline-flex", 
+                  alignItems: "center", 
+                  gap: "4px" 
+                }}>
+                  See More →
+                </span>
               </article>
             ))
           )}
