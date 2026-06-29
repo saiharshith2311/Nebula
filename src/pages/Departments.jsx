@@ -305,7 +305,7 @@ export default function Departments() {
                     style={{ 
                       display: "flex", 
                       flexDirection: "column", 
-                      height: "170px", 
+                      height: "200px", 
                       padding: "24px",
                       cursor: "pointer"
                     }}
