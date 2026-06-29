@@ -49,38 +49,6 @@ function FormatDescription({ text }) {
             linkText.includes("File:") ||
             linkUrl.includes("drive.google.com");
 
-          const isImage = linkUrl.match(/\.(jpeg|jpg|gif|png|webp|svg)/i);
-
-          if (isImage) {
-            parts.push(
-              <div key={match.index} style={{ marginTop: "12px", display: "flex", flexDirection: "column", gap: "8px" }}>
-                <img
-                  src={linkUrl}
-                  alt={linkText}
-                  style={{
-                    width: "100%",
-                    maxHeight: "140px",
-                    objectFit: "cover",
-                    borderRadius: "12px",
-                    border: "1px solid var(--line)"
-                  }}
-                />
-                <a
-                  href={linkUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="resource-link-btn"
-                  style={{ display: "inline-flex", alignSelf: "flex-start" }}
-                >
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ marginRight: "6px", display: "inline-block", verticalAlign: "text-bottom" }}>
-                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                    <circle cx="12" cy="12" r="3" />
-                  </svg>
-                  View Flyer
-                </a>
-              </div>
-            );
-          } else {
             parts.push(
               <a
                 key={match.index}
@@ -115,7 +83,6 @@ function FormatDescription({ text }) {
                 {linkText}
               </a>
             );
-          }
 
           lastIndex = mdLinkRegex.lastIndex;
         }
@@ -139,7 +106,6 @@ export default function Events() {
   const [category, setCategory] = useState("Academic");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [selectedFile, setSelectedFile] = useState(null);
 
   const isMockMode = !!localStorage.getItem("mockSession");
 
@@ -212,29 +178,13 @@ export default function Events() {
       description,
     };
 
-    if (selectedFile) {
-      if (isMockMode) {
-        payload.description += `\n\n[Attached File: ${selectedFile.name} - Saved Locally]`;
-        await submitPayload(payload);
-      } else {
-        const reader = new FileReader();
-        reader.onload = async (event) => {
-          payload.file_name = selectedFile.name;
-          payload.file_data = event.target.result;
-          await submitPayload(payload);
-        };
-        reader.readAsDataURL(selectedFile);
-      }
-    } else {
-      await submitPayload(payload);
-    }
+    await submitPayload(payload);
   };
 
   const resetForm = () => {
     setCategory("Academic");
     setTitle("");
     setDescription("");
-    setSelectedFile(null);
   };
 
   return (
@@ -314,22 +264,6 @@ export default function Events() {
                       padding: "10px",
                       fontFamily: "inherit",
                       resize: "vertical",
-                    }}
-                  />
-                </label>
-                <label>
-                  Event Flyer / Image (Optional)
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => setSelectedFile(e.target.files[0])}
-                    style={{
-                      padding: "8px",
-                      background: "rgba(8, 9, 8, 0.72)",
-                      border: "1px solid rgba(244, 240, 232, 0.13)",
-                      borderRadius: "8px",
-                      color: "var(--body)",
-                      cursor: "pointer",
                     }}
                   />
                 </label>

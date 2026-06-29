@@ -11,13 +11,7 @@ export default function Home() {
 
   const handleFeedbackClick = (e) => {
     e.preventDefault();
-    navigator.clipboard.writeText("hitman26457@gmail.com")
-      .then(() => {
-        addToast("Email copied! Mail your suggestions to the copied email.", "success");
-      })
-      .catch((err) => {
-        console.error("Clipboard copy failed:", err);
-      });
+    window.open("https://docs.google.com/forms/d/e/1FAIpQLScLJEszzOvRshT-DUwEBkvinQbY-I9QLOtEbwJbFh3qcY7n6Q/viewform", "_blank", "noopener,noreferrer");
   };
   const [authError, setAuthError] = useState("");
 
