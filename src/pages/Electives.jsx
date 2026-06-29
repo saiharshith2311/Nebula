@@ -575,7 +575,7 @@ export default function Electives() {
               )}
             </div>
             <p className="result-count" aria-live="polite">
-              {loading ? "Loading reviews..." : `${filteredReviews.length} course${filteredReviews.length === 1 ? "" : "s"} found`}
+              {loading ? "Loading reviews..." : `${filteredReviews.length} review${filteredReviews.length === 1 ? "" : "s"} found`}
             </p>
           </aside>
 
