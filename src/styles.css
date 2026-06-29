@@ -706,6 +706,8 @@ select option {
 
 .review-card h3 {
   margin-bottom: 8px;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 .review-body {
@@ -745,6 +747,8 @@ select option {
   margin-bottom: 0;
   color: var(--body);
   line-height: 1.55;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 .empty-state {
@@ -938,6 +942,8 @@ select option {
   margin-bottom: 10px;
   color: var(--ink);
   font-size: 1.1rem;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 .resource-card p,
