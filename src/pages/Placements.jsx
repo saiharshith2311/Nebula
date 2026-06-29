@@ -68,7 +68,6 @@ export default function Placements() {
   // Form states
   const [category, setCategory] = useState("Non Core");
   const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
   const [resourceLink, setResourceLink] = useState("");
 
   const isMockMode = !!localStorage.getItem("mockSession");
@@ -160,9 +159,7 @@ export default function Placements() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const finalDesc = description.trim()
-      ? `${description.trim()}\n\n[Open Resource](${resourceLink.trim()})`
-      : `[Open Resource](${resourceLink.trim()})`;
+    const finalDesc = `[Open Resource](${resourceLink.trim()})`;
     
     const submitPayload = async (payload) => {
       if (isMockMode) {
@@ -205,7 +202,6 @@ export default function Placements() {
   const resetForm = () => {
     setCategory("Non Core");
     setTitle("");
-    setDescription("");
     setResourceLink("");
   };
 
@@ -317,9 +313,9 @@ export default function Placements() {
                     placeholder="e.g. SDE Interview Practice"
                     onChange={(e) => setTitle(e.target.value)}
                     required
-                  />
-                </label>
-                <label>
+                />
+              </label>
+              <label>
                   Resource Link (e.g. Google Drive, Website URL)
                   <input
                     type="url"
@@ -327,25 +323,6 @@ export default function Placements() {
                     placeholder="https://drive.google.com/..."
                     onChange={(e) => setResourceLink(e.target.value)}
                     required
-                  />
-                </label>
-                <label>
-                  Short Description (Optional)
-                  <textarea
-                    rows="3"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    placeholder="Add preparation notes or details about the resource..."
-                    style={{
-                      width: "100%",
-                      borderRadius: "8px",
-                      background: "rgba(8, 9, 8, 0.72)",
-                      border: "1px solid rgba(244, 240, 232, 0.13)",
-                      color: "var(--ink)",
-                      padding: "10px",
-                      fontFamily: "inherit",
-                      resize: "vertical",
-                    }}
                   />
                 </label>
               </form>

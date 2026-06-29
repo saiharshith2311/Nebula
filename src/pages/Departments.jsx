@@ -114,7 +114,6 @@ export default function Departments() {
   const [category, setCategory] = useState("Aerospace");
   const [customCategory, setCustomCategory] = useState("");
   const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
   const [resourceLink, setResourceLink] = useState("");
 
   const isMockMode = !!localStorage.getItem("mockSession");
@@ -206,7 +205,6 @@ export default function Departments() {
     setCategory("Aerospace");
     setCustomCategory("");
     setTitle("");
-    setDescription("");
     setResourceLink("");
   };
 
@@ -215,9 +213,7 @@ export default function Departments() {
 
     const finalCategory = category === "Other" ? (customCategory.trim() || "Other") : category;
     
-    const finalDesc = description.trim()
-      ? `${description.trim()}\n\n[Open Resource](${resourceLink.trim()})`
-      : `[Open Resource](${resourceLink.trim()})`;
+    const finalDesc = `[Open Resource](${resourceLink.trim()})`;
 
     const submitPayload = async (payload) => {
       if (isMockMode) {
@@ -482,26 +478,6 @@ export default function Departments() {
                     placeholder="https://drive.google.com/..."
                     onChange={(e) => setResourceLink(e.target.value)}
                     required
-                  />
-                </label>
-
-                <label>
-                  Short Description (Optional)
-                  <textarea
-                    rows="3"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    placeholder="Add extra notes or details about the resource..."
-                    style={{
-                      width: "100%",
-                      borderRadius: "8px",
-                      background: "#ffffff",
-                      border: "1px solid rgba(0, 0, 0, 0.08)",
-                      color: "var(--ink)",
-                      padding: "10px",
-                      fontFamily: "inherit",
-                      resize: "vertical",
-                    }}
                   />
                 </label>
               </form>
