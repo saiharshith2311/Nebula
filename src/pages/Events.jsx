@@ -235,6 +235,7 @@ export default function Events() {
                     <option value="Academic">Academic</option>
                     <option value="Career">Career</option>
                     <option value="Campus Life">Campus Life</option>
+                    <option value="Other">Other</option>
                   </select>
                 </label>
                 <label>
