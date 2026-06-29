@@ -106,6 +106,8 @@ export default function Events() {
   const [category, setCategory] = useState("Academic");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [customCategory, setCustomCategory] = useState("");
+  const [selectedEvent, setSelectedEvent] = useState(null);
 
   const isMockMode = !!localStorage.getItem("mockSession");
 
@@ -172,8 +174,9 @@ export default function Events() {
       }
     };
 
+    const finalCategory = category === "Other" && customCategory.trim() ? customCategory.trim() : category;
     const payload = {
-      category,
+      category: finalCategory,
       title,
       description,
     };
@@ -185,7 +188,41 @@ export default function Events() {
     setCategory("Academic");
     setTitle("");
     setDescription("");
+    setCustomCategory("");
   };
+
+  if (selectedEvent) {
+    return (
+      <Layout>
+        <article className="feature-panel is-visible">
+          <div className="panel-header" style={{ borderBottom: "none" }}>
+            <button className="ghost-button secondary compact" onClick={() => setSelectedEvent(null)} type="button">
+              ← Back to Events
+            </button>
+          </div>
+          
+          <div style={{ padding: "0 28px 48px", maxWidth: "800px" }}>
+            <p className="eyebrow" style={{ color: "var(--sky)", textTransform: "uppercase" }}>{selectedEvent.category}</p>
+            <h1 style={{ fontSize: "2.5rem", marginTop: "12px", marginBottom: "24px", color: "var(--ink)", fontWeight: "900" }}>
+              {selectedEvent.title}
+            </h1>
+            
+            <div style={{ 
+              background: "var(--surface-soft)", 
+              border: "1px solid var(--line)", 
+              borderRadius: "24px", 
+              padding: "32px",
+              fontSize: "1.1rem",
+              lineHeight: "1.7",
+              color: "var(--body)"
+            }}>
+              <FormatDescription text={selectedEvent.description} />
+            </div>
+          </div>
+        </article>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
@@ -207,7 +244,7 @@ export default function Events() {
             <p style={{ gridColumn: "1/-1", textAlign: "center", color: "var(--body)" }}>No events found.</p>
           ) : (
             events.map((evt, index) => (
-              <article key={evt.id || index} className="event-card">
+              <article key={evt.id || index} className="event-card" onClick={() => setSelectedEvent(evt)}>
                 <span>{evt.category}</span>
                 <strong>{evt.title}</strong>
                 <FormatDescription text={evt.description} />
@@ -238,6 +275,17 @@ export default function Events() {
                     <option value="Other">Other</option>
                   </select>
                 </label>
+                {category === "Other" && (
+                  <label style={{ marginTop: "10px" }}>
+                    Custom Category Name (Optional)
+                    <input
+                      type="text"
+                      value={customCategory}
+                      placeholder="e.g. Tech Club, Sports"
+                      onChange={(e) => setCustomCategory(e.target.value)}
+                    />
+                  </label>
+                )}
                 <label>
                   Event Title
                   <input
