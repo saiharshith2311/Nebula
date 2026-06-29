@@ -305,11 +305,9 @@ export default function Departments() {
                     style={{ 
                       display: "flex", 
                       flexDirection: "column", 
-                      height: "auto", 
-                      minHeight: "150px", 
+                      height: "170px", 
                       padding: "24px",
-                      cursor: "pointer",
-                      justifyContent: "space-between"
+                      cursor: "pointer"
                     }}
                   >
                     <div>
