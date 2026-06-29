@@ -904,7 +904,7 @@ select option {
 .event-card {
   display: flex;
   flex-direction: column;
-  min-height: 190px;
+  height: 220px;
   padding: 20px;
   border: 1px solid var(--line);
   background: var(--surface-soft);
@@ -953,6 +953,11 @@ select option {
   line-height: 1.55;
   word-break: break-word;
   overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 @media (max-width: 980px) {

@@ -380,6 +380,7 @@ export default function Departments() {
                         flexDirection: "column", 
                         padding: "24px", 
                         minHeight: "auto",
+                        height: "auto",
                         width: "100%",
                         boxShadow: "var(--soft-shadow)"
                       }}
