@@ -1375,3 +1375,14 @@ textarea::placeholder {
   color: var(--teal-dark);
   padding-left: 18px;
 }
+
+/* Sticky footer layout */
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.tool-page-main {
+  flex: 1;
+}
