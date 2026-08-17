@@ -22,7 +22,10 @@ export async function onRequest(context) {
 
   try {
     const body = await request.json();
-    const supabase = createClient(env.SUPABASE_URL || "", env.SUPABASE_ANON_KEY || "");
+    let supabase = null;
+    if (env.SUPABASE_URL && env.SUPABASE_ANON_KEY) {
+      supabase = createClient(env.SUPABASE_URL, env.SUPABASE_ANON_KEY);
+    }
     const result = await handleChat({
       message: body.message,
       history: body.history,
