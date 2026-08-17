@@ -2,6 +2,7 @@ import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useToast } from "../context/ToastContext";
+import CampusChat from "./CampusChat";
 
 export default function Layout({ children }) {
   const { user, logout } = useAuth();
@@ -112,6 +113,7 @@ export default function Layout({ children }) {
           Share your feedback and suggestions
         </a>
       </footer>
+      <CampusChat />
     </div>
   );
 }

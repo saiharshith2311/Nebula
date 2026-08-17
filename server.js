@@ -6,6 +6,7 @@ import { extname, join, normalize, resolve } from "node:path";
 import { spawn } from "node:child_process";
 import { createClient } from "@supabase/supabase-js";
 import { mkdir, writeFile } from "node:fs/promises";
+import { handleChat } from "./lib/chatHandler.js";
 
 const host = process.env.HOST || "127.0.0.1";
 const port = Number(process.env.PORT || 3000);
@@ -16,13 +17,14 @@ const shouldOpen = process.argv.includes("--open");
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
 
-if (!supabaseUrl || !supabaseAnonKey) {
+const supabase =
+  supabaseUrl && supabaseAnonKey ? createClient(supabaseUrl, supabaseAnonKey) : null;
+
+if (!supabase) {
   console.warn(
-    "Warning: SUPABASE_URL or SUPABASE_ANON_KEY is missing in your .env file."
+    "Warning: SUPABASE_URL or SUPABASE_ANON_KEY is missing in your .env file. API tables will use local fallbacks."
   );
 }
-
-const supabase = createClient(supabaseUrl || "", supabaseAnonKey || "");
 
 const mimeTypes = {
   ".css": "text/css; charset=utf-8",
@@ -99,6 +101,36 @@ const server = createServer(async (request, response) => {
       );
       return;
     }
+
+    if (table === "chat") {
+      if (request.method !== "POST") {
+        response.writeHead(405, { "Content-Type": "application/json" });
+        response.end(JSON.stringify({ error: "Method not allowed" }));
+        return;
+      }
+      try {
+        const body = await parseJsonBody(request);
+        const result = await handleChat({
+          message: body.message,
+          history: body.history,
+          supabase,
+          env: process.env,
+        });
+        response.writeHead(result.status, { "Content-Type": "application/json" });
+        response.end(
+          JSON.stringify(
+            result.status === 200
+              ? { answer: result.answer, sources: result.sources }
+              : { error: result.error }
+          )
+        );
+      } catch (err) {
+        console.error("Chat error:", err);
+        response.writeHead(500, { "Content-Type": "application/json" });
+        response.end(JSON.stringify({ error: "Chat failed." }));
+      }
+      return;
+    }
     // Supported tables
     if (!["reviews", "events", "placements", "departments"].includes(table)) {
       response.writeHead(404, { "Content-Type": "application/json" });
@@ -108,6 +140,12 @@ const server = createServer(async (request, response) => {
 
     try {
       if (request.method === "GET") {
+        if (!supabase) {
+          response.writeHead(200, { "Content-Type": "application/json" });
+          response.end("[]");
+          return;
+        }
+
         // Fetch all items from Supabase ordered by created_at descending
         const { data, error } = await supabase
           .from(table)
@@ -122,6 +160,12 @@ const server = createServer(async (request, response) => {
       }
 
       if (request.method === "POST") {
+        if (!supabase) {
+          response.writeHead(503, { "Content-Type": "application/json" });
+          response.end(JSON.stringify({ error: "Supabase is not configured." }));
+          return;
+        }
+
         const body = await parseJsonBody(request);
 
         // Handle file uploads (Supabase Storage Cloud Upload with Local Backup Fallback)

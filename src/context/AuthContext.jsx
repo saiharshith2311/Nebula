@@ -87,7 +87,17 @@ export function AuthProvider({ children }) {
 
   const loginWithGoogle = async () => {
     if (!supabaseClient) {
-      alert("Supabase client is not initialized.");
+      const mockUser = {
+        id: "demo-local",
+        email: "demo@smail.iitm.ac.in",
+        user_metadata: {
+          full_name: "Demo Student",
+          avatar_url: "",
+        },
+      };
+      localStorage.setItem("mockSession", JSON.stringify(mockUser));
+      setUser(mockUser);
+      addToast("Logged in locally (Supabase is not configured).", "success");
       return;
     }
     sessionStorage.setItem("explicitLoginPending", "true"); // Track explicit login attempt
